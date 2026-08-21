@@ -1,0 +1,29 @@
+name: Toggle Status
+
+on:
+  workflow_dispatch:
+    inputs:
+      status:
+        description: 'Pilih status'
+        required: true
+        type: choice
+        options:
+          - ACTIVE
+          - DISABLED
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update status file
+        run: echo "${{ github.event.inputs.status }}" > status.txt
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add status.txt
+          git commit -m "Update status to ${{ github.event.inputs.status }}" || echo "No changes"
+          git push
