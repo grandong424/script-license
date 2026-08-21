@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Update status file
-        run: echo "${{ github.event.inputs.status }}" > status.txt
+        run: echo -n "${{ github.event.inputs.status }}" > status.txt
 
       - name: Commit and push
         run: |
@@ -27,3 +27,14 @@ jobs:
           git add status.txt
           git commit -m "Update status to ${{ github.event.inputs.status }}" || echo "No changes"
           git push
+
+      - name: Confirm result
+        run: |
+          echo "## ✅ Status Berhasil Diupdate" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status yang dipilih:** \`${{ github.event.inputs.status }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Isi file status.txt sekarang:**" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat status.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
