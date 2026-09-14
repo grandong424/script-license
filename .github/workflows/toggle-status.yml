@@ -15,7 +15,7 @@ jobs:
   update-status:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Update status file
         run: echo -n "${{ github.event.inputs.status }}" > status.txt
